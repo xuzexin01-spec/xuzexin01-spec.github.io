@@ -1,0 +1,245 @@
+{
+  "profile": {
+    "name": "许泽鑫",
+    "subtitle": "PORTFOLIO · 2026",
+    "headline": "AI 系统、数字人与三维空间",
+    "bio": "",
+    "contactLabel": "",
+    "contactValue": ""
+  },
+  "projects": [
+    {
+      "id": "aftersales",
+      "index": "01",
+      "title": "智家售后 Copilot",
+      "subtitle": "家电企业智能售后排障与工单协同 Agent",
+      "categoryLabel": "AI Agent · Deep RAG",
+      "year": "2026",
+      "url": "http://106.53.222.39/aftersales/",
+      "actionLabel": "进入在线工作台",
+      "healthUrl": null,
+      "requiresLogin": true,
+      "showcaseOnly": false,
+      "isPortrait": false,
+      "cover": "./assets/img/aftersales.svg",
+      "summary": "面向 B 端售后工程师与客服坐席的排障协同工作台。打通 Qdrant + BM25 混合检索、本地 BGE ONNX 向量化、MCP 2.x 质保/库存/工单工具链与 LangGraph 7 节点状态机，支持一线工程师与售后主管双角色审批流及 SSE 逐字实时推送。",
+      "metrics": [
+        {
+          "k": "编排引擎",
+          "v": "LangGraph 7 节点状态机"
+        },
+        {
+          "k": "检索策略",
+          "v": "model_id 隔离 + 父子切片 + RRF 精排"
+        },
+        {
+          "k": "权限闭环",
+          "v": "RBAC 角色切换 + 主管审批落库"
+        }
+      ],
+      "stack": [
+        "LangGraph",
+        "FastAPI",
+        "DeepSeek",
+        "Qdrant",
+        "BGE ONNX",
+        "MCP 2.x",
+        "Next.js 15"
+      ],
+      "demoNote": "受模型调用额度限制，需演示账号登录（请联系获取）。"
+    },
+    {
+      "id": "delia",
+      "index": "02",
+      "title": "迪莉娅 AI 直播间",
+      "subtitle": "迪莉娅的商队驿站 · 本地实时驱动 B 站 AI 虚拟主播",
+      "categoryLabel": "AI 数字人直播",
+      "year": "2026",
+      "url": "/delia/",
+      "actionLabel": "查看完整实机展示",
+      "healthUrl": null,
+      "requiresLogin": false,
+      "showcaseOnly": true,
+      "isPortrait": true,
+      "cover": "./delia/assets/img/stage_speaking_1080x1920.webp",
+      "coverIdle": "./delia/assets/img/stage_idle_1080x1920.webp",
+      "coverGif": "./delia/assets/gif/stage_talking.gif",
+      "summary": "运行在本地 GPU 环境的完整虚拟主播系统：实时读取 B 站直播间弹幕，经 DeepSeek 生成符合角色人设的台词，由 Qwen TTS 合成语音并交由 LiveTalking（Wav2Lip）实时驱动口型，最终渲染在 1080×1920 竖屏网页舞台上接入直播姬开播，配套 WebView2 独立桌面控制端。",
+      "metrics": [
+        {
+          "k": "实时链路",
+          "v": "弹幕 → DeepSeek → Qwen TTS → Wav2Lip"
+        },
+        {
+          "k": "舞台输出",
+          "v": "1080×1920 竖屏浏览器源 · 直播姬直连"
+        },
+        {
+          "k": "桌面控制",
+          "v": "pywebview / WebView2 一体化中控台"
+        }
+      ],
+      "stack": [
+        "FastAPI",
+        "WebSocket",
+        "DeepSeek",
+        "Qwen TTS",
+        "LiveTalking",
+        "Wav2Lip",
+        "WebView2"
+      ],
+      "demoNote": "本地 GPU 实时推理项目，可在此直接切换主播状态/口型动图，或点击进入查看完整控制台截图。"
+    },
+    {
+      "id": "muse",
+      "index": "03",
+      "title": "MUSE 灵感引擎",
+      "subtitle": "多模态 AI 自由画布创作工作台",
+      "categoryLabel": "AIGC 工作台",
+      "year": "2026",
+      "url": "/muse/",
+      "actionLabel": "进入创作工作台",
+      "healthUrl": null,
+      "requiresLogin": true,
+      "showcaseOnly": false,
+      "isPortrait": false,
+      "cover": "./assets/img/muse.jpg",
+      "summary": "面向影视、广告与内容团队的节点式 AI 创作平台原型。支持文本、图片、视频、音频、Agent 与预演台 8 类节点自由连线，集成多模型参数面板、四源参考素材库、视频片段截取与 15 秒品牌短片引导生成工作流。",
+      "metrics": [
+        {
+          "k": "交互形态",
+          "v": "XYFlow 自由画布 + 移动端引导卡片流"
+        },
+        {
+          "k": "节点体系",
+          "v": "8 类多模态节点 · 手柄拖拽连线"
+        },
+        {
+          "k": "演示流程",
+          "v": "剧本 → 分镜 → 视频合成 → 成片预演"
+        }
+      ],
+      "stack": [
+        "React",
+        "TypeScript",
+        "XYFlow",
+        "Zustand",
+        "Vite"
+      ],
+      "demoNote": "演示环境需登录访问，请联系获取体验账号。"
+    },
+    {
+      "id": "aether",
+      "index": "04",
+      "title": "AETHER X4 无人机手册",
+      "subtitle": "三维四层系统拆解 + 实时 AI 原理问答",
+      "categoryLabel": "Three.js · FastAPI",
+      "year": "2026",
+      "url": "/aether/",
+      "actionLabel": "打开 3D 交互手册",
+      "healthUrl": null,
+      "requiresLogin": false,
+      "showcaseOnly": false,
+      "isPortrait": false,
+      "cover": "./assets/img/aether.jpg",
+      "summary": "概念无人机视觉原理交互手册。通过 Blender 建模与 Draco 网格压缩（仅 93 KB glTF），在浏览器中实现感知、计算、动力、能源四层爆炸拆解与飞行回路 Canvas 仿真，并内置基于 GLM-4-Flash 的手册知识库问答面板。",
+      "metrics": [
+        {
+          "k": "模型体积",
+          "v": "7,684 三角面 · 93 KB Draco glTF"
+        },
+        {
+          "k": "加载策略",
+          "v": "零外部 CDN · WebGL 按需懒加载"
+        },
+        {
+          "k": "AI 问答",
+          "v": "FastAPI + GLM-4-Flash 知识库检索"
+        }
+      ],
+      "stack": [
+        "Three.js",
+        "Blender",
+        "Draco glTF",
+        "Canvas 2D",
+        "FastAPI",
+        "GLM-4-Flash"
+      ],
+      "demoNote": "打开即用，可直接拖拽旋转三维机体并向手册提问。"
+    },
+    {
+      "id": "station",
+      "index": "05",
+      "title": "未来车站 · 360° 漫游",
+      "subtitle": "82m 玻璃拱顶与 38 根树形柱高铁枢纽",
+      "categoryLabel": "Blender · 360° 全景",
+      "year": "2026",
+      "url": "/station/",
+      "actionLabel": "进入 360° 漫游",
+      "healthUrl": null,
+      "requiresLogin": false,
+      "showcaseOnly": false,
+      "isPortrait": false,
+      "cover": "./assets/img/station.jpg",
+      "summary": "Blender Cycles 渲染的未来高铁枢纽 360° 全景导览。覆盖主轴、站台、拱顶、露台、连桥、轨道、大厅与南广场共 8 个 4096×2048 机位，带平面图视角锥实时联动与 Hash 深链直达。",
+      "metrics": [
+        {
+          "k": "空间规模",
+          "v": "8 × 4K 全景机位（4096×2048）"
+        },
+        {
+          "k": "交互导航",
+          "v": "平面图实时视角锥 + 深链直达"
+        },
+        {
+          "k": "部署形态",
+          "v": "纯静态自包含 · 桌面与手机竖屏适配"
+        }
+      ],
+      "stack": [
+        "Blender Cycles",
+        "Pannellum",
+        "4K Panorama",
+        "Static Web"
+      ],
+      "demoNote": "打开即用，点击「进入 360° 全景」即可自由漫游。"
+    },
+    {
+      "id": "lunar-konbini",
+      "index": "06",
+      "title": "月球便利店 · 360° 导览",
+      "subtitle": "月球静海旁的 24 小时概念便利店",
+      "categoryLabel": "Blender · 360° 全景",
+      "year": "2026",
+      "url": "/lunar-konbini/",
+      "actionLabel": "进入 360° 导览",
+      "healthUrl": null,
+      "requiresLogin": false,
+      "showcaseOnly": false,
+      "isPortrait": false,
+      "cover": "./assets/img/lunar-konbini.jpg",
+      "summary": "设想在月球静海旁的 24 小时主题便利店全景漫游。Blender 5.2 Cycles 渲染 5 个室内外机位（入口、中岛、咖啡区、休憩区与主视角），融合店内小地图、编号热点跳转与窗外地月景观。",
+      "metrics": [
+        {
+          "k": "交付体积",
+          "v": "仅约 3 MB 轻量化静态包"
+        },
+        {
+          "k": "渲染管线",
+          "v": "Blender 5.2 + Cycles + NASA 素材"
+        },
+        {
+          "k": "交互方式",
+          "v": "5 机位无缝切换 · 热点与小地图联动"
+        }
+      ],
+      "stack": [
+        "Blender 5.2",
+        "Cycles",
+        "Pannellum",
+        "Static Web"
+      ],
+      "demoNote": "打开即用，拖动即可环顾窗外地月景观。"
+    }
+  ]
+}

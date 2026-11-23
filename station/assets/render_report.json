@@ -1,0 +1,587 @@
+{
+  "files": [
+    {
+      "kind": "pano",
+      "id": "axis",
+      "file": "assets/panos/axis.jpg",
+      "width": 4096,
+      "height": 2048,
+      "format": "JPEG",
+      "quality": 88,
+      "samples": 110,
+      "seconds": 128.82,
+      "bytes": 1360895,
+      "camera": "CAM_Hero",
+      "finished_at": "2026-11-13T05:14:57Z",
+      "pos": [
+        11.0,
+        6.0,
+        2.9
+      ],
+      "centre_yaw_deg": 0.0,
+      "rotation_euler_deg": [
+        90.0,
+        0.0,
+        0.0
+      ],
+      "look_yaw_deg_ignored": -18.0,
+      "look_pitch_deg_ignored": -2.0
+    },
+    {
+      "kind": "pano",
+      "id": "bridge",
+      "file": "assets/panos/bridge.jpg",
+      "width": 4096,
+      "height": 2048,
+      "format": "JPEG",
+      "quality": 88,
+      "samples": 110,
+      "seconds": 115.88,
+      "bytes": 1379690,
+      "camera": "CAM_Hero",
+      "finished_at": "2026-11-13T05:24:31Z",
+      "pos": [
+        15.0,
+        149.0,
+        9.25
+      ],
+      "centre_yaw_deg": 0.0,
+      "rotation_euler_deg": [
+        90.0,
+        0.0,
+        0.0
+      ],
+      "look_yaw_deg_ignored": 180.0,
+      "look_pitch_deg_ignored": -5.0
+    },
+    {
+      "kind": "pano",
+      "id": "hall",
+      "file": "assets/panos/hall.jpg",
+      "width": 4096,
+      "height": 2048,
+      "format": "JPEG",
+      "quality": 88,
+      "samples": 110,
+      "seconds": 139.12,
+      "bytes": 1204957,
+      "camera": "CAM_Hero",
+      "finished_at": "2026-11-13T05:43:41Z",
+      "pos": [
+        -20.0,
+        82.0,
+        2.9
+      ],
+      "centre_yaw_deg": 0.0,
+      "rotation_euler_deg": [
+        90.0,
+        0.0,
+        0.0
+      ],
+      "look_yaw_deg_ignored": -112.0,
+      "look_pitch_deg_ignored": 4.0
+    },
+    {
+      "kind": "pano",
+      "id": "rail",
+      "file": "assets/panos/rail.jpg",
+      "width": 4096,
+      "height": 2048,
+      "format": "JPEG",
+      "quality": 88,
+      "samples": 110,
+      "seconds": 113.96,
+      "bytes": 1560287,
+      "camera": "CAM_Hero",
+      "finished_at": "2026-11-13T05:41:22Z",
+      "pos": [
+        18.6,
+        116.0,
+        2.9
+      ],
+      "centre_yaw_deg": 0.0,
+      "rotation_euler_deg": [
+        90.0,
+        0.0,
+        0.0
+      ],
+      "look_yaw_deg_ignored": -12.0,
+      "look_pitch_deg_ignored": -9.0
+    },
+    {
+      "kind": "pano",
+      "id": "south",
+      "file": "assets/panos/south.jpg",
+      "width": 4096,
+      "height": 2048,
+      "format": "JPEG",
+      "quality": 88,
+      "samples": 110,
+      "seconds": 119.52,
+      "bytes": 1344415,
+      "camera": "CAM_Hero",
+      "finished_at": "2026-11-13T05:30:56Z",
+      "pos": [
+        11.0,
+        -42.0,
+        2.9
+      ],
+      "centre_yaw_deg": 0.0,
+      "rotation_euler_deg": [
+        90.0,
+        0.0,
+        0.0
+      ],
+      "look_yaw_deg_ignored": 0.0,
+      "look_pitch_deg_ignored": -1.0
+    },
+    {
+      "kind": "pano",
+      "id": "terrace",
+      "file": "assets/panos/terrace.jpg",
+      "width": 4096,
+      "height": 2048,
+      "format": "JPEG",
+      "quality": 88,
+      "samples": 110,
+      "seconds": 142.59,
+      "bytes": 1224798,
+      "camera": "CAM_Hero",
+      "finished_at": "2026-11-13T05:22:35Z",
+      "pos": [
+        -24.4,
+        40.0,
+        9.25
+      ],
+      "centre_yaw_deg": 0.0,
+      "rotation_euler_deg": [
+        90.0,
+        0.0,
+        0.0
+      ],
+      "look_yaw_deg_ignored": 96.0,
+      "look_pitch_deg_ignored": -6.0
+    },
+    {
+      "kind": "pano",
+      "id": "train",
+      "file": "assets/panos/train.jpg",
+      "width": 4096,
+      "height": 2048,
+      "format": "JPEG",
+      "quality": 88,
+      "samples": 110,
+      "seconds": 120.93,
+      "bytes": 1333961,
+      "camera": "CAM_Hero",
+      "finished_at": "2026-11-13T05:16:58Z",
+      "pos": [
+        9.6,
+        17.0,
+        2.9
+      ],
+      "centre_yaw_deg": 0.0,
+      "rotation_euler_deg": [
+        90.0,
+        0.0,
+        0.0
+      ],
+      "look_yaw_deg_ignored": -138.0,
+      "look_pitch_deg_ignored": -4.0
+    },
+    {
+      "kind": "pano",
+      "id": "vault",
+      "file": "assets/panos/vault.jpg",
+      "width": 4096,
+      "height": 2048,
+      "format": "JPEG",
+      "quality": 88,
+      "samples": 110,
+      "seconds": 136.2,
+      "bytes": 1278744,
+      "camera": "CAM_Hero",
+      "finished_at": "2026-11-13T05:39:28Z",
+      "pos": [
+        -1.0,
+        44.0,
+        2.9
+      ],
+      "centre_yaw_deg": 0.0,
+      "rotation_euler_deg": [
+        90.0,
+        0.0,
+        0.0
+      ],
+      "look_yaw_deg_ignored": 20.0,
+      "look_pitch_deg_ignored": 16.0
+    },
+    {
+      "kind": "plan",
+      "id": "plan",
+      "file": "assets/plan.png",
+      "width": 1000,
+      "height": 2280,
+      "format": "PNG",
+      "quality": null,
+      "samples": 110,
+      "seconds": 32.82,
+      "bytes": 3362882,
+      "camera": "CAM_Back",
+      "finished_at": "2026-11-13T05:31:29Z",
+      "plan_bounds": {
+        "x_min": -50,
+        "x_max": 75,
+        "y_min": -95,
+        "y_max": 190
+      },
+      "up": "+Y north"
+    },
+    {
+      "kind": "poster",
+      "id": "axis",
+      "file": "assets/poster/axis.jpg",
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 86,
+      "samples": 110,
+      "seconds": 16.06,
+      "bytes": 186052,
+      "camera": "CAM_Wide",
+      "finished_at": "2026-11-13T05:19:31Z",
+      "pos": [
+        11.0,
+        6.0,
+        2.9
+      ],
+      "look_yaw_deg": -18.0,
+      "look_pitch_deg": -2.0
+    },
+    {
+      "kind": "poster",
+      "id": "bridge",
+      "file": "assets/poster/bridge.jpg",
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 86,
+      "samples": 110,
+      "seconds": 16.5,
+      "bytes": 238577,
+      "camera": "CAM_Wide",
+      "finished_at": "2026-11-13T05:32:03Z",
+      "pos": [
+        15.0,
+        149.0,
+        9.25
+      ],
+      "look_yaw_deg": 180.0,
+      "look_pitch_deg": -5.0
+    },
+    {
+      "kind": "poster",
+      "id": "hall",
+      "file": "assets/poster/hall.jpg",
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 86,
+      "samples": 110,
+      "seconds": 20.12,
+      "bytes": 103663,
+      "camera": "CAM_Wide",
+      "finished_at": "2026-11-13T05:44:32Z",
+      "pos": [
+        -20.0,
+        82.0,
+        2.9
+      ],
+      "look_yaw_deg": -112.0,
+      "look_pitch_deg": 4.0
+    },
+    {
+      "kind": "poster",
+      "id": "rail",
+      "file": "assets/poster/rail.jpg",
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 86,
+      "samples": 110,
+      "seconds": 14.15,
+      "bytes": 175165,
+      "camera": "CAM_Wide",
+      "finished_at": "2026-11-13T05:44:12Z",
+      "pos": [
+        18.6,
+        116.0,
+        2.9
+      ],
+      "look_yaw_deg": -12.0,
+      "look_pitch_deg": -9.0
+    },
+    {
+      "kind": "poster",
+      "id": "south",
+      "file": "assets/poster/south.jpg",
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 86,
+      "samples": 110,
+      "seconds": 16.26,
+      "bytes": 197247,
+      "camera": "CAM_Wide",
+      "finished_at": "2026-11-13T05:32:52Z",
+      "pos": [
+        11.0,
+        -42.0,
+        2.9
+      ],
+      "look_yaw_deg": 0.0,
+      "look_pitch_deg": -1.0
+    },
+    {
+      "kind": "poster",
+      "id": "terrace",
+      "file": "assets/poster/terrace.jpg",
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 86,
+      "samples": 110,
+      "seconds": 16.95,
+      "bytes": 203747,
+      "camera": "CAM_Wide",
+      "finished_at": "2026-11-13T05:31:46Z",
+      "pos": [
+        -24.4,
+        40.0,
+        9.25
+      ],
+      "look_yaw_deg": 96.0,
+      "look_pitch_deg": -6.0
+    },
+    {
+      "kind": "poster",
+      "id": "train",
+      "file": "assets/poster/train.jpg",
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 86,
+      "samples": 110,
+      "seconds": 15.72,
+      "bytes": 172682,
+      "camera": "CAM_Wide",
+      "finished_at": "2026-11-13T05:19:47Z",
+      "pos": [
+        9.6,
+        17.0,
+        2.9
+      ],
+      "look_yaw_deg": -138.0,
+      "look_pitch_deg": -4.0
+    },
+    {
+      "kind": "poster",
+      "id": "vault",
+      "file": "assets/poster/vault.jpg",
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 86,
+      "samples": 110,
+      "seconds": 16.78,
+      "bytes": 216472,
+      "camera": "CAM_Wide",
+      "finished_at": "2026-11-13T05:43:58Z",
+      "pos": [
+        -1.0,
+        44.0,
+        2.9
+      ],
+      "look_yaw_deg": 20.0,
+      "look_pitch_deg": 16.0
+    }
+  ],
+  "failures": [],
+  "generated_at": "2026-11-13T05:44:32Z",
+  "manifest": {
+    "file": "manifest.json",
+    "sha256": "06c6fa482adade1e8a360c19c2217f4da7fafd17656c43b69da0ebfb64f3e4ac",
+    "bytes": 3711,
+    "mtime": "2026-11-13T05:37:08Z",
+    "plan": {
+      "x_min": -50,
+      "x_max": 75,
+      "y_min": -95,
+      "y_max": 190,
+      "image": "assets/plan.jpg"
+    },
+    "stations": [
+      {
+        "id": "axis",
+        "pos": [
+          11,
+          6,
+          2.9
+        ],
+        "yaw": -18,
+        "pitch": -2
+      },
+      {
+        "id": "train",
+        "pos": [
+          9.6,
+          17,
+          2.9
+        ],
+        "yaw": -138,
+        "pitch": -4
+      },
+      {
+        "id": "vault",
+        "pos": [
+          -1,
+          44,
+          2.9
+        ],
+        "yaw": 20,
+        "pitch": 16
+      },
+      {
+        "id": "terrace",
+        "pos": [
+          -24.4,
+          40,
+          9.25
+        ],
+        "yaw": 96,
+        "pitch": -6
+      },
+      {
+        "id": "bridge",
+        "pos": [
+          15,
+          149,
+          9.25
+        ],
+        "yaw": 180,
+        "pitch": -5
+      },
+      {
+        "id": "rail",
+        "pos": [
+          18.6,
+          116,
+          2.9
+        ],
+        "yaw": -12,
+        "pitch": -9
+      },
+      {
+        "id": "hall",
+        "pos": [
+          -20,
+          82,
+          2.9
+        ],
+        "yaw": -112,
+        "pitch": 4
+      },
+      {
+        "id": "south",
+        "pos": [
+          11,
+          -42,
+          2.9
+        ],
+        "yaw": 0,
+        "pitch": -1
+      }
+    ]
+  },
+  "blender_version": "5.2.3 LTS",
+  "script": "tour/render_tour.py",
+  "engine": "CYCLES",
+  "scene": {
+    "name": "Scene",
+    "objects": 1597
+  },
+  "camera_rig": {
+    "pano": "CAM_Hero",
+    "poster": "CAM_Wide",
+    "plan": "CAM_Back"
+  },
+  "convention": {
+    "pano_centre": "+Y north",
+    "pano_rotation_euler_deg": [
+      90.0,
+      0.0,
+      0.0
+    ],
+    "manifest_yaw_deg": "0 = +Y north, positive = toward +X east",
+    "plan_up": "+Y north"
+  },
+  "settings": {
+    "pano": {
+      "res": [
+        4096,
+        2048
+      ],
+      "samples": 110,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "poster": {
+      "res": [
+        1280,
+        720
+      ],
+      "samples": 110,
+      "format": "JPEG",
+      "quality": 86,
+      "lens_mm": 22.0
+    },
+    "plan": {
+      "res": [
+        1000,
+        2280
+      ],
+      "samples": 110,
+      "format": "PNG"
+    },
+    "cycles": {
+      "device": "GPU",
+      "denoiser": "OPENIMAGEDENOISE",
+      "adaptive_threshold": 0.00800000037997961,
+      "max_bounces": 10,
+      "transparent_max_bounces": 24
+    }
+  },
+  "totals": {
+    "files": 17,
+    "bytes": 15544234,
+    "seconds": 1182.38,
+    "by_kind": {
+      "pano": {
+        "files": 8,
+        "bytes": 10687747,
+        "seconds": 1017.02
+      },
+      "plan": {
+        "files": 1,
+        "bytes": 3362882,
+        "seconds": 32.82
+      },
+      "poster": {
+        "files": 8,
+        "bytes": 1493605,
+        "seconds": 132.54
+      }
+    }
+  },
+  "output_dir": "assets"
+}

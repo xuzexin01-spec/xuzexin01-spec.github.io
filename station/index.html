@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0e13">
+<title>未来车站 · FUTURE STATION — 360° 全景导览</title>
+<meta name="description" content="现代高铁站 360° 全景导览：82 m 跨度玻璃拱顶、38 根树形柱、站台、列车与跨线廊桥。拖动环顾，点击机位，在线走进未来车站。">
+<meta property="og:title" content="未来车站 · FUTURE STATION — 360° 全景导览">
+<meta property="og:description" content="8 个机位，走进一座 82 m 跨度的现代高铁站。">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/poster/axis.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' fill='%230a0e13'/%3E%3Cpath d='M6 33.5V31a18 18 0 0 1 36 0v2.5' fill='none' stroke='%237fa5c4' stroke-width='1.4'/%3E%3Cpath d='M24 12v26M15 35v6M24 35v6M33 35v6' fill='none' stroke='%23f2b21a' stroke-width='1.4'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="vendor/pannellum.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="is-booting">
+
+<div id="panorama" aria-label="360 度全景视图"></div>
+<div class="fx-grain" aria-hidden="true"></div>
+<div class="fx-vignette" aria-hidden="true"></div>
+<div class="fx-marks" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+<header class="hud hud-top">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 48 48" fill="none">
+        <path d="M6 33.5V31a18 18 0 0 1 36 0v2.5" stroke="#7fa5c4" stroke-width="1.2"/>
+        <path d="M13 33.5V31a11 11 0 0 1 22 0v2.5" stroke="#eef1f4" stroke-opacity=".5" stroke-width="1"/>
+        <path d="M24 11.5v27" stroke="#f2b21a" stroke-width="1.4"/>
+        <path d="M8 38.5h32" stroke="#eef1f4" stroke-opacity=".35" stroke-width="1"/>
+        <path d="M15 35.5v5M24 35.5v5M33 35.5v5" stroke="#eef1f4" stroke-opacity=".3" stroke-width="1"/>
+      </svg>
+    </span>
+    <span class="brand-text">
+      <strong>未来车站</strong>
+      <small>FUTURE STATION <i>·</i> 360° TOUR</small>
+    </span>
+  </div>
+  <nav class="top-actions" aria-label="全景控制">
+    <button id="btn-autorotate" class="chip" type="button" aria-pressed="false" title="自动环顾（R）">
+      <span class="chip-dot" aria-hidden="true"></span><span class="chip-label">自动环顾</span>
+    </button>
+    <button id="btn-info" class="chip" type="button" title="关于（关于本场景）">
+      <svg viewBox="0 0 16 16" aria-hidden="true" fill="none"><circle cx="8" cy="8" r="6.4" stroke="currentColor" stroke-width="1.1"/><path d="M8 7.2v4M8 4.8v.9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <span class="chip-label">关于</span>
+    </button>
+    <button id="btn-fullscreen" class="chip" type="button" aria-pressed="false" title="全屏（F）">
+      <svg viewBox="0 0 16 16" aria-hidden="true" fill="none"><path d="M2.5 6V2.5H6M10 2.5h3.5V6M13.5 10v3.5H10M6 13.5H2.5V10" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+      <span class="chip-label">全屏</span>
+    </button>
+  </nav>
+</header>
+
+<section class="station-cap" id="station-cap" aria-live="polite" aria-atomic="true">
+  <div class="cap-rule"><span id="cap-num">01</span><i aria-hidden="true"></i><span id="cap-total">08</span><span class="cap-tag">机位 / VIEWPOINT</span></div>
+  <h2 id="cap-name">站台主轴</h2>
+  <p class="cap-en" id="cap-en">PLATFORM AXIS</p>
+  <p class="cap-blurb" id="cap-blurb">站在 B2 站台上，正对整座大厅的主轴：左侧是 8 编组列车，右侧是轨行区，头顶是 82 m 跨的玻璃拱顶。</p>
+</section>
+
+<aside class="map-card" id="map-card" aria-label="站内平面导航">
+  <div class="map-head"><span>站内导航</span><em>PLAN</em></div>
+  <div class="map-stage is-missing" id="map-stage">
+    <div class="map-fallback" aria-hidden="true"></div>
+    <img class="map-img" id="plan-img" data-src="assets/plan.jpg" data-fallback="assets/plan.png" alt="车站平面图" decoding="async">
+    <svg class="map-svg" id="map-svg" aria-hidden="true"><path id="map-cone" d=""></path></svg>
+    <div class="map-dots" id="map-dots"></div>
+    <span class="map-north" aria-hidden="true">N<i></i></span>
+  </div>
+  <div class="map-foot"><span id="map-note">点击圆点切换</span><span id="map-hdg">HDG 000°</span></div>
+</aside>
+
+<footer class="hud hud-bottom">
+  <div class="nav-wrap">
+    <div class="nav-label"><span>机位导航 / STATIONS</span><em id="nav-count">08</em></div>
+    <div class="scene-nav" id="scene-nav" role="tablist" aria-label="机位"></div>
+  </div>
+  <p class="hint">拖动环顾<i>·</i>滚轮 / 双指缩放<i>·</i>← → 切换机位</p>
+</footer>
+
+<div class="pano-spinner" id="pano-spinner" aria-hidden="true">
+  <span class="ps-ring"></span>
+  <span class="ps-label" id="pano-spinner-label">正在载入全景</span>
+</div>
+
+<div id="pano-error" class="pano-error" hidden>
+  <div class="pe-card">
+    <p class="pe-kicker">PANORAMA UNAVAILABLE</p>
+    <h3>全景图尚未就绪</h3>
+    <p>无法载入 <code id="pe-path">assets/panos/axis.jpg</code>。图像由 Blender 端渲染完成后会自动出现在这里。</p>
+    <button id="btn-retry-pano" class="btn-line" type="button">重新载入</button>
+  </div>
+</div>
+
+<div id="intro" class="intro" role="dialog" aria-modal="true" aria-labelledby="intro-title">
+  <div class="intro-bg" id="intro-bg"></div>
+  <div class="intro-shade"></div>
+  <div class="intro-inner">
+    <div class="intro-top">
+      <span>360° STATION TOUR</span><i aria-hidden="true"></i><span>BLENDER 5.2.3 / CYCLES</span>
+      <span class="intro-top-r" id="intro-count">08 STATIONS</span>
+    </div>
+
+    <div class="intro-grid">
+      <div class="intro-main">
+        <p class="intro-overline"><span class="intro-tick" aria-hidden="true"></span><span id="intro-sub">现代高铁站 · 大跨度玻璃穹顶</span></p>
+        <h1 id="intro-title">未来车站</h1>
+        <p class="intro-en">FUTURE STATION</p>
+        <p class="intro-desc" id="intro-desc">这是一个 1:1 建模的现代高铁站：82 m 跨度玻璃拱顶、38 根“树形柱”、8 轨道 5 站台、三座 CRH 动车组、站房商业内廊、高架夹层与跨线廊桥。全景由 Blender 5.2.3 / Cycles 从同一个主场景渲染。</p>
+        <div class="intro-cta">
+          <button id="btn-enter" class="enter-btn" type="button">
+            <span>进入 360° 全景</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 12h15M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <p class="intro-meta" id="intro-meta">8 个机位 · Cycles 渲染 · 手机 / 桌面可用</p>
+        </div>
+      </div>
+
+      <div class="intro-side">
+        <div class="intro-side-head"><span>站内机位</span><em>STATION INDEX</em></div>
+        <ol class="intro-list" id="intro-list"></ol>
+      </div>
+    </div>
+
+    <div class="intro-foot">
+      <span>拖动环顾</span><i>·</i><span>滚轮 / 双指缩放</span><i>·</i><span>点击箭头切换机位</span>
+      <span class="intro-foot-r">无登录 · 无插件 · 静态站点</span>
+    </div>
+  </div>
+</div>
+
+<div id="loader" class="loader" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="正在装载全景">
+  <div class="loader-top"><span>未来车站 / FUTURE STATION</span><span>360° TOUR</span></div>
+  <div class="loader-center">
+    <div class="loader-mark" aria-hidden="true">
+      <svg viewBox="0 0 48 48" fill="none">
+        <path d="M6 33.5V31a18 18 0 0 1 36 0v2.5" stroke="#7fa5c4" stroke-width="1.2"/>
+        <path d="M24 11.5v27" stroke="#f2b21a" stroke-width="1.4"/>
+        <path d="M8 38.5h32" stroke="#eef1f4" stroke-opacity=".35" stroke-width="1"/>
+      </svg>
+    </div>
+    <p class="loader-kicker" id="loader-label">正在装载 01 · 站台主轴</p>
+    <div class="loader-readout"><strong id="loader-pct">0</strong><span>%</span></div>
+    <div class="loader-bar"><i id="loader-fill"></i></div>
+    <div class="loader-meta"><span id="loader-bytes">0.0 MB</span><span>4096 × 2048 · 等距柱状全景</span></div>
+    <button class="loader-retry" id="loader-retry" type="button" hidden>重新载入</button>
+  </div>
+  <div class="loader-foot"><span>BLENDER 5.2.3 / CYCLES</span><span>PANN ELLUM 2.5.6</span></div>
+</div>
+
+<div id="info-modal" class="modal" aria-hidden="true">
+  <div class="modal-scrim" data-close="1"></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="info-title">
+    <button class="modal-close" id="btn-close-info" type="button" aria-label="关闭关于窗口">×</button>
+    <p class="modal-kicker">ABOUT THE SCENE</p>
+    <h2 id="info-title">关于未来车站</h2>
+    <p class="modal-about" id="info-about">这是一个 1:1 建模的现代高铁站。</p>
+    <dl class="facts" id="info-facts"></dl>
+    <div class="modal-block">
+      <h3 class="modal-sub">导览 / TOUR</h3>
+      <dl class="facts" id="info-tour"></dl>
+    </div>
+    <div class="modal-block">
+      <h3 class="modal-sub">快捷键 / KEYBOARD</h3>
+      <ul class="keys">
+        <li><kbd>←</kbd><kbd>→</kbd><span>上一 / 下一机位</span></li>
+        <li><kbd>R</kbd><span>自动环顾</span></li>
+        <li><kbd>F</kbd><span>全屏</span></li>
+        <li><kbd>Esc</kbd><span>关闭窗口</span></li>
+      </ul>
+    </div>
+    <p class="modal-note">静态站点，无登录、无后端。全景由 Blender 5.2.3 / Cycles 渲染，浏览器端由 Pannellum 2.5.6 呈现。</p>
+    <div class="modal-actions"><button class="btn-line" id="btn-close-info-2" type="button">关闭</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<noscript><div class="noscript">本导览需要启用 JavaScript 才能显示 360° 全景。</div></noscript>
+
+<script src="vendor/pannellum.js"></script>
+<script src="js/tour.js"></script>
+</body>
+</html>

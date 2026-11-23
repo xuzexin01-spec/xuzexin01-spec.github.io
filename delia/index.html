@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#faf8f4" />
+  <title>迪莉娅 AI 直播间 · 许泽鑫作品集</title>
+  <meta name="description" content="迪莉娅的商队驿站：本地 B 站 AI 虚拟主播系统（DeepSeek + Qwen TTS + LiveTalking/Wav2Lip + 1080×1920 网页舞台）。" />
+  <link rel="stylesheet" href="../assets/css/fonts.css" />
+  <style>
+    :root {
+      --bg: #faf8f4;
+      --bg-soft: #f3efe8;
+      --surface: #ffffff;
+      --border: #e8e2d8;
+      --border-strong: #d4cbbd;
+      --ink: #1c1a17;
+      --ink-muted: #645f57;
+      --ink-dim: #928b80;
+      --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      --sans: 'Barlow', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; cursor: pointer; }
+
+    .wrap {
+      width: min(1080px, calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(250, 248, 244, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .topbar__inner {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      color: var(--ink-muted);
+      transition: color 0.15s ease;
+    }
+    .back-link:hover { color: var(--ink); }
+    .topbar__tag {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--ink-dim);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 56px 0 64px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero__grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .kicker {
+      margin: 0 0 12px;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--ink-dim);
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.18;
+    }
+    .hero__sub {
+      margin: 10px 0 0;
+      font-size: 16px;
+      color: var(--ink-muted);
+    }
+    .hero__desc {
+      margin: 20px 0 24px;
+      font-size: 15px;
+      color: var(--ink-muted);
+    }
+
+    /* Pipeline */
+    .pipeline {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 24px;
+    }
+    .pipe-step {
+      padding: 6px 11px;
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      font-size: 12.5px;
+      font-weight: 500;
+    }
+    .pipe-arrow {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--ink-dim);
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 22px;
+    }
+    .tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 6px;
+      background: var(--bg-soft);
+      color: var(--ink-muted);
+    }
+
+    .notice {
+      padding: 12px 15px;
+      border-radius: 10px;
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--ink-muted);
+    }
+
+    /* 9:16 Stage Viewer */
+    .stage-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .stage-frame {
+      position: relative;
+      height: min(68vh, 610px);
+      aspect-ratio: 9 / 16;
+      background: #141311;
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid var(--border-strong);
+      box-shadow: 0 20px 50px rgba(28, 26, 23, 0.12);
+    }
+    .stage-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .stage-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(20, 19, 17, 0.72);
+      color: #f5f2ec;
+      font-family: var(--mono);
+      font-size: 11px;
+      backdrop-filter: blur(6px);
+    }
+    .stage-controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .mode-btn {
+      padding: 6px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font-size: 12.5px;
+      color: var(--ink-muted);
+      transition: all 0.15s ease;
+    }
+    .mode-btn:hover { border-color: var(--border-strong); color: var(--ink); }
+    .mode-btn.is-active {
+      background: var(--ink);
+      color: var(--bg);
+      border-color: var(--ink);
+    }
+
+    /* Sections */
+    .section {
+      padding: 64px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .sec-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 26px;
+    }
+    .sec-head h2 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+    .sec-head p {
+      margin: 6px 0 0;
+      font-size: 14px;
+      color: var(--ink-muted);
+    }
+
+    /* Client Tabs */
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .tab-btn {
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      font-size: 13px;
+      color: var(--ink-muted);
+      transition: all 0.15s ease;
+    }
+    .tab-btn:hover { border-color: var(--border-strong); color: var(--ink); }
+    .tab-btn.is-active {
+      background: var(--ink);
+      color: var(--bg);
+      border-color: var(--ink);
+    }
+
+    .screen-card {
+      background: #17171a;
+      border: 1px solid var(--border-strong);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 18px 44px rgba(28, 26, 23, 0.08);
+    }
+    .screen-card__img-wrap {
+      cursor: zoom-in;
+      background: #111114;
+    }
+    .screen-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .screen-card__cap {
+      padding: 16px 22px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .screen-card__cap strong { font-size: 15px; }
+    .screen-card__cap span { font-size: 13.5px; color: var(--ink-muted); }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      background: rgba(15, 14, 12, 0.86);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      cursor: zoom-out;
+    }
+    .lightbox.is-open { display: flex; }
+    .lightbox img {
+      max-width: min(94vw, 1400px);
+      max-height: 90vh;
+      border-radius: 10px;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Footer */
+    .footer {
+      padding: 30px 0 46px;
+      font-size: 13px;
+      color: var(--ink-dim);
+    }
+    .footer__inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    @media (max-width: 860px) {
+      .hero__grid { grid-template-columns: 1fr; gap: 36px; }
+      .stage-frame { height: min(62vh, 520px); }
+    }
+    @media (max-width: 600px) {
+      .wrap { width: min(1080px, calc(100% - 28px)); }
+      .hero { padding: 36px 0 48px; }
+      .section { padding: 48px 0; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <a class="back-link" href="/">← 返回作品集</a>
+      <span class="topbar__tag">PROJECT 02 · LOCAL AI VTUBER</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap hero__grid">
+        <div>
+          <p class="kicker">AI DIGITAL HUMAN LIVE · 2026</p>
+          <h1>迪莉娅 AI 直播间</h1>
+          <p class="hero__sub">迪莉娅的商队驿站 —— 本地实时驱动的 B 站 AI 虚拟主播</p>
+          <p class="hero__desc">
+            一个运行在本地 GPU 环境的完整虚拟主播系统：实时读取直播间弹幕，由 DeepSeek 生成符合角色人设的台词，经 Qwen TTS 合成语音并交由 LiveTalking（Wav2Lip）实时驱动口型，最终渲染在 1080×1920 竖屏网页舞台上，可直接接入直播姬浏览器源开播。
+          </p>
+
+          <div class="pipeline" aria-label="系统链路">
+            <span class="pipe-step">B 站弹幕</span>
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-step">DeepSeek 台词</span>
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-step">Qwen TTS 语音</span>
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-step">LiveTalking 口型</span>
+            <span class="pipe-arrow">→</span>
+            <span class="pipe-step">1080×1920 舞台</span>
+          </div>
+
+          <div class="tags">
+            <span class="tag">FastAPI</span>
+            <span class="tag">WebSocket</span>
+            <span class="tag">DeepSeek</span>
+            <span class="tag">Qwen TTS</span>
+            <span class="tag">LiveTalking / Wav2Lip</span>
+            <span class="tag">pywebview / WebView2</span>
+          </div>
+
+          <div class="notice">
+            因涉及本地 GPU 实时口型推理与桌面推流环境，本项目未部署在云端；本页展示内容均为实机运行截图与 3 秒口型循环动图（示例房间号与弹幕已脱敏）。
+          </div>
+        </div>
+
+        <div class="stage-box">
+          <div class="stage-frame">
+            <span class="stage-badge" id="stageBadge">1080×1920 · 通话中</span>
+            <img id="stageImg" src="./assets/img/stage_speaking_1080x1920.webp" alt="迪莉娅 AI 虚拟主播竖屏直播间舞台" />
+          </div>
+          <div class="stage-controls">
+            <button class="mode-btn is-active" data-mode="speaking" type="button">说话中（静态）</button>
+            <button class="mode-btn" data-mode="idle" type="button">待机状态</button>
+            <button class="mode-btn" data-mode="gif" type="button">播放 3 秒口型动图</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="sec-head">
+          <div>
+            <h2>一块面板管完整场直播</h2>
+            <p>控制台覆盖弹幕监听、回复节奏、语音音色试听、动作词库与直播姬浏览器源一键配置（点击图片可放大查看）。</p>
+          </div>
+        </div>
+
+        <div class="tabs" id="clientTabs">
+          <button class="tab-btn is-active" data-key="live" type="button">01 直播间与弹幕</button>
+          <button class="tab-btn" data-key="reply" type="button">02 连接与回复</button>
+          <button class="tab-btn" data-key="voice" type="button">03 语音与音色</button>
+          <button class="tab-btn" data-key="capture" type="button">04 直播姬推流</button>
+        </div>
+
+        <div class="screen-card">
+          <div class="screen-card__img-wrap" id="clientZoom">
+            <img id="clientImg" src="./assets/img/client_live_1440x1000.webp" alt="迪莉娅直播间控制台" />
+          </div>
+          <div class="screen-card__cap">
+            <strong id="clientTitle">直播间总控</strong>
+            <span id="clientDesc">集中查看服务运行状态、B 站房间连接、手动发弹幕测试以及最近弹幕队列。</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="sec-head">
+          <div>
+            <h2>独立桌面客户端（WebView2）</h2>
+            <p>基于 pywebview 与 PyInstaller 封装，不占用浏览器页签；启动时自动检测并拉起本地后端服务。</p>
+          </div>
+        </div>
+
+        <div class="screen-card">
+          <div class="screen-card__img-wrap" id="desktopZoom">
+            <img src="./assets/img/desktop_client_window.webp" alt="WebView2 桌面客户端真实窗口" loading="lazy" />
+          </div>
+          <div class="screen-card__cap">
+            <strong>Windows 桌面端实机窗口</strong>
+            <span>单窗口管理本地 FastAPI 后端与舞台状态，开箱即用。</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <span>© 2026 许泽鑫 · 迪莉娅 AI 直播间</span>
+      <span>AI 生成内容 · 非真人 · 非商用学习与作品展示</span>
+    </div>
+  </footer>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <img id="lightboxImg" src="" alt="放大预览" />
+  </div>
+
+  <script>
+    const stageMap = {
+      speaking: { src: './assets/img/stage_speaking_1080x1920.webp', badge: '1080×1920 · 通话中' },
+      idle: { src: './assets/img/stage_idle_1080x1920.webp', badge: '1080×1920 · 待机中' },
+      gif: { src: './assets/gif/stage_talking.gif', badge: 'LiveTalking · 3s 无声口型动图' }
+    };
+
+    const stageImg = document.getElementById('stageImg');
+    const stageBadge = document.getElementById('stageBadge');
+    document.querySelectorAll('.mode-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const mode = btn.getAttribute('data-mode');
+        const info = stageMap[mode];
+        if (!info) return;
+        document.querySelectorAll('.mode-btn').forEach((b) => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        stageBadge.textContent = mode === 'gif' ? '正在加载动图 (3.2 MB)…' : info.badge;
+        stageImg.onload = () => { stageBadge.textContent = info.badge; };
+        stageImg.src = info.src;
+      });
+    });
+
+    const clientPanels = {
+      live: {
+        src: './assets/img/client_live_1440x1000.webp',
+        title: '直播间总控',
+        desc: '集中查看服务运行状态、B 站房间连接、手动发弹幕测试以及最近弹幕队列。'
+      },
+      reply: {
+        src: './assets/img/client_reply_1440x1000.webp',
+        title: '连接与回复节奏',
+        desc: '配置 DeepSeek 模型参数、弹幕触发频率与回复冷却间隔，修改后一键重启后端生效。'
+      },
+      voice: {
+        src: './assets/img/client_voice_1440x1000.webp',
+        title: '语音与音色试听',
+        desc: '接入 Qwen TTS，支持切换音色模型与实时输入文本试听合成效果。'
+      },
+      capture: {
+        src: './assets/img/client_capture_1440x1000.webp',
+        title: '直播姬 / OBS 推流接法',
+        desc: '提供 1080×1920 浏览器源地址与分辨率指引，复制即可接入直播姬或 OBS 开播。'
+      }
+    };
+
+    const clientImg = document.getElementById('clientImg');
+    const clientTitle = document.getElementById('clientTitle');
+    const clientDesc = document.getElementById('clientDesc');
+
+    document.querySelectorAll('.tab-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const key = btn.getAttribute('data-key');
+        const p = clientPanels[key];
+        if (!p) return;
+        document.querySelectorAll('.tab-btn').forEach((b) => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        clientImg.src = p.src;
+        clientTitle.textContent = p.title;
+        clientDesc.textContent = p.desc;
+      });
+    });
+
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    function openLightbox(src) {
+      lightboxImg.src = src;
+      lightbox.classList.add('is-open');
+      lightbox.setAttribute('aria-hidden', 'false');
+    }
+    document.getElementById('clientZoom').addEventListener('click', () => openLightbox(clientImg.src));
+    document.getElementById('desktopZoom').addEventListener('click', () => openLightbox('./assets/img/desktop_client_window.webp'));
+    lightbox.addEventListener('click', () => {
+      lightbox.classList.remove('is-open');
+      lightbox.setAttribute('aria-hidden', 'true');
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        lightbox.classList.remove('is-open');
+        lightbox.setAttribute('aria-hidden', 'true');
+      }
+    });
+  </script>
+</body>
+</html>

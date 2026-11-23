@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="is-booting">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#EDF2F6" />
+<title>AETHER — 让飞行有迹可循</title>
+<meta name="description" content="无人机视觉原理手册：感知、规划、控制，一页看清。" />
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjMEQxQjI0Ii8+PGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTMiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0U4NTcxRiIgc3Ryb2tlLW9wYWNpdHk9Ii41Ii8+PHJlY3QgeD0iMTAuNSIgeT0iMTAuNSIgd2lkdGg9IjExIiBoZWlnaHQ9IjExIiB0cmFuc2Zvcm09InJvdGF0ZSg0NSAxNiAxNikiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0U4NTcxRiIgc3Ryb2tlLXdpZHRoPSIxLjgiLz48Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIyLjYiIGZpbGw9IiNFODU3MUYiLz48L3N2Zz4=" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="AETHER — 看得见的飞行逻辑" />
+<meta property="og:description" content="无人机视觉原理手册。不读说明书，直接看它如何感知、规划与飞行。" />
+<meta property="og:url" content="http://106.53.222.39/aether/" />
+<meta property="og:image" content="http://106.53.222.39/aether/assets/og.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<script type="importmap">
+{
+  "imports": {
+    "three": "./assets/vendor/three/three.module.js",
+    "three/addons/": "./assets/vendor/three/addons/"
+  }
+}
+</script>
+<link rel="stylesheet" href="./assets/css/fonts.css" />
+<link rel="stylesheet" href="./assets/css/site.css" />
+</head>
+<body>
+
+<div class="boot" id="boot" aria-hidden="true">
+  <span class="boot__c boot__c--tl"></span>
+  <span class="boot__c boot__c--tr"></span>
+  <span class="boot__c boot__c--bl"></span>
+  <span class="boot__c boot__c--br"></span>
+  <div class="boot__inner">
+    <div class="boot__brand">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <circle cx="16" cy="16" r="14.5" stroke="currentColor" stroke-opacity=".4"/>
+        <path d="M16 3v7M16 22v7M3 16h7M22 16h7" stroke="currentColor" stroke-width="1.2"/>
+        <rect x="11.5" y="11.5" width="9" height="9" transform="rotate(45 16 16)" stroke="currentColor" stroke-width="1.2"/>
+        <circle cx="16" cy="16" r="2" fill="currentColor"/>
+      </svg>
+      <span class="boot__name">AETHER</span>
+      <span class="boot__sub">UAV Visual Manual</span>
+    </div>
+    <div class="boot__track"><i id="bootFill"></i></div>
+    <div class="boot__row">
+      <span class="boot__status"><i class="boot__dot"></i>UAV LINK ESTABLISHING · 飞行链路建立</span>
+      <span class="boot__pct"><b id="bootPct">000</b><i>%</i></span>
+    </div>
+    <div class="boot__meta"><span>Boot Sequence</span><span>AETHER X4 · Rev 4.0</span></div>
+  </div>
+</div>
+<noscript><style>.boot{display:none}html.is-booting{overflow:auto}</style></noscript>
+
+<div class="fx fx--grain"></div>
+<div class="fx fx--vignette"></div>
+<div class="progress"><i id="progressBar"></i></div>
+
+<header class="topbar">
+  <a class="brand" href="#home" aria-label="AETHER 首屏">
+    <span class="brand__mark">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <circle cx="16" cy="16" r="14.5" stroke="currentColor" stroke-opacity=".4"/>
+        <path d="M16 3v7M16 22v7M3 16h7M22 16h7" stroke="currentColor" stroke-width="1.2"/>
+        <rect x="11.5" y="11.5" width="9" height="9" transform="rotate(45 16 16)" stroke="currentColor" stroke-width="1.2"/>
+        <circle cx="16" cy="16" r="2" fill="currentColor"/>
+      </svg>
+    </span>
+    <span class="brand__word">
+      <span class="brand__name">AETHER</span>
+      <span class="brand__sub">UAV Visual Manual</span>
+    </span>
+  </a>
+  <div class="topbar__status">
+    <i class="dot"></i>
+    <span>Tracking 03 Contacts</span>
+  </div>
+</header>
+
+<aside class="rail" aria-label="章节索引">
+  <div class="rail__head">
+    <span>Section Index</span>
+    <span class="rail__count"><b id="railIdx">00</b> / 05</span>
+  </div>
+  <nav class="rail__nav">
+    <a class="rail__item is-active" href="#home" data-i="0"><span class="rail__num">00</span><span class="rail__txt"><span class="rail__cn">首屏</span><span class="rail__en">Home</span></span></a>
+    <a class="rail__item" href="#airframe" data-i="1"><span class="rail__num">01</span><span class="rail__txt"><span class="rail__cn">机体档案</span><span class="rail__en">Airframe</span></span></a>
+    <a class="rail__item" href="#teardown" data-i="2"><span class="rail__num">02</span><span class="rail__txt"><span class="rail__cn">系统拆解</span><span class="rail__en">Teardown</span></span></a>
+    <a class="rail__item" href="#flight" data-i="3"><span class="rail__num">03</span><span class="rail__txt"><span class="rail__cn">飞行回路</span><span class="rail__en">Flight Loop</span></span></a>
+    <a class="rail__item" href="#missions" data-i="4"><span class="rail__num">04</span><span class="rail__txt"><span class="rail__cn">任务场景</span><span class="rail__en">Missions</span></span></a>
+    <a class="rail__item" href="#archive" data-i="5"><span class="rail__num">05</span><span class="rail__txt"><span class="rail__cn">档案</span><span class="rail__en">Archive</span></span></a>
+  </nav>
+  <div class="rail__foot">
+    <div class="rail__track"><i id="railTrack"></i></div>
+    <div class="rail__pct"><span id="railPct">00</span>%</div>
+  </div>
+</aside>
+
+<nav class="mnav" aria-label="章节导航">
+  <a class="mnav__item is-active" href="#home" data-i="0"><span class="mnav__num">00</span><span class="mnav__cn">首屏</span></a>
+  <a class="mnav__item" href="#airframe" data-i="1"><span class="mnav__num">01</span><span class="mnav__cn">机体</span></a>
+  <a class="mnav__item" href="#teardown" data-i="2"><span class="mnav__num">02</span><span class="mnav__cn">拆解</span></a>
+  <a class="mnav__item" href="#flight" data-i="3"><span class="mnav__num">03</span><span class="mnav__cn">回路</span></a>
+  <a class="mnav__item" href="#missions" data-i="4"><span class="mnav__num">04</span><span class="mnav__cn">任务</span></a>
+  <a class="mnav__item" href="#archive" data-i="5"><span class="mnav__num">05</span><span class="mnav__cn">档案</span></a>
+</nav>
+
+<main class="shell">
+
+<!-- 00 HERO -->
+<section id="home" class="section hero" data-section="0">
+  <div class="hero__glow"></div>
+  <canvas class="hero__field" id="heroField"></canvas>
+
+  <div class="hero__inner">
+    <div class="eyebrow"><span class="eyebrow__sq"></span><span>AETHER X4 · 四旋翼勘测平台</span></div>
+    <h1 class="hero__title">
+      <span class="hero__line">看得见的</span>
+      <span class="hero__line hero__line--hollow">飞行逻辑</span>
+    </h1>
+    <p class="hero__sub">
+      无人机视觉原理手册 · <strong>不读说明书，直接看它如何感知、规划与飞行。</strong>
+    </p>
+    <div class="hero__actions">
+      <a href="#airframe" class="btn btn--solid">进入机体档案 <span>↘</span></a>
+      <a href="#teardown" class="btn btn--ghost">观看系统拆解 <span>↓</span></a>
+    </div>
+
+    <div class="hero__art">
+      <div class="radar">
+        <svg class="radar__svg" viewBox="0 0 720 720" aria-hidden="true">
+          <defs>
+            <radialGradient id="sweepGrad" gradientUnits="userSpaceOnUse" cx="360" cy="360" r="310">
+              <stop offset="0%" stop-color="#2C5D7C" stop-opacity=".22"/>
+              <stop offset="60%" stop-color="#2C5D7C" stop-opacity=".07"/>
+              <stop offset="100%" stop-color="#2C5D7C" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="coreGlow" gradientUnits="userSpaceOnUse" cx="360" cy="360" r="150">
+              <stop offset="0%" stop-color="#7FB0CE" stop-opacity=".22"/>
+              <stop offset="100%" stop-color="#7FB0CE" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <circle cx="360" cy="360" r="190" fill="url(#coreGlow)"/>
+          <circle cx="360" cy="360" r="318" fill="none" stroke="rgba(13,27,34,.16)" stroke-width="1" stroke-dasharray="1 17"/>
+          <circle cx="360" cy="360" r="288" fill="none" stroke="rgba(13,27,34,.17)" stroke-width=".8" stroke-dasharray="1 9"/>
+          <circle cx="360" cy="360" r="238" class="hud-draw" pathLength="1" fill="none" stroke="rgba(13,27,34,.20)" stroke-width="1"/>
+          <circle cx="360" cy="360" r="176" fill="none" stroke="rgba(13,27,34,.16)" stroke-width="1" stroke-dasharray="3 7"/>
+          <circle cx="360" cy="360" r="104" class="hud-draw" pathLength="1" fill="none" stroke="rgba(13,27,34,.20)" stroke-width="1"/>
+          <line x1="30" y1="360" x2="690" y2="360" class="hud-draw" pathLength="1" stroke="rgba(13,27,34,.16)" stroke-width="1"/>
+          <line x1="360" y1="30" x2="360" y2="690" class="hud-draw" pathLength="1" stroke="rgba(13,27,34,.16)" stroke-width="1"/>
+          <g font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="3" fill="rgba(13,27,34,.4)">
+            <text x="360" y="26" text-anchor="middle">000</text>
+            <text x="360" y="706" text-anchor="middle">180</text>
+            <text x="700" y="364">090</text>
+            <text x="14" y="364">270</text>
+          </g>
+
+          <circle class="sonar" cx="360" cy="360" r="150" fill="none" stroke="rgba(44,93,124,.26)" stroke-width="1"/>
+          <circle class="sonar sonar--2" cx="360" cy="360" r="150" fill="none" stroke="rgba(44,93,124,.16)" stroke-width=".8"/>
+          <circle class="sonar sonar--3" cx="360" cy="360" r="150" fill="none" stroke="rgba(44,93,124,.10)" stroke-width=".8"/>
+
+          <g class="radar__sweep-g">
+            <path d="M360 360 L360 58 A302 302 0 0 1 511 82 Z" fill="url(#sweepGrad)"/>
+            <line x1="360" y1="360" x2="360" y2="58" stroke="rgba(44,93,124,.32)" stroke-width="1"/>
+          </g>
+
+          <g stroke="rgba(232,87,31,.5)" fill="none">
+            <circle cx="524" cy="238" r="15" stroke-dasharray="2 5"/>
+            <circle cx="196" cy="470" r="12" stroke-dasharray="2 5"/>
+            <circle cx="536" cy="512" r="9" stroke-dasharray="2 5"/>
+          </g>
+          <g class="radar-blips" fill="#E8571F">
+            <circle cx="524" cy="238" r="2.6"/>
+            <circle cx="196" cy="470" r="2.2"/>
+            <circle cx="536" cy="512" r="1.9"/>
+          </g>
+          <g font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1.6" fill="rgba(13,27,34,.38)">
+            <text x="544" y="235">OBJ / 01</text>
+            <text x="150" y="500">OBJ / 02</text>
+            <text x="548" y="540">OBJ / 03</text>
+          </g>
+
+          <!-- drone, top view -->
+          <g class="drone">
+            <g stroke="#22323D" stroke-width="10" stroke-linecap="round" opacity=".85">
+              <line x1="360" y1="360" x2="206" y2="206"/>
+              <line x1="360" y1="360" x2="514" y2="206"/>
+              <line x1="360" y1="360" x2="206" y2="514"/>
+              <line x1="360" y1="360" x2="514" y2="514"/>
+            </g>
+            <g stroke="rgba(255,255,255,.9)" stroke-width="1" stroke-dasharray="4 5">
+              <line x1="360" y1="360" x2="206" y2="206"/>
+              <line x1="360" y1="360" x2="514" y2="206"/>
+              <line x1="360" y1="360" x2="206" y2="514"/>
+              <line x1="360" y1="360" x2="514" y2="514"/>
+            </g>
+
+            <g transform="translate(206,206)">
+              <circle r="74" fill="none" stroke="rgba(13,27,34,.14)" stroke-dasharray="2 7"/>
+              <circle r="60" fill="rgba(255,255,255,.55)" stroke="rgba(13,27,34,.08)"/>
+              <g class="prop-cw"><ellipse rx="55" ry="3" fill="rgba(34,50,61,.35)"/><ellipse rx="3" ry="55" fill="rgba(34,50,61,.28)"/></g>
+              <circle r="10" fill="#fff" stroke="#22323D" stroke-width="1.2"/>
+              <circle class="radar-node" r="3" fill="#E8571F"/>
+            </g>
+            <g transform="translate(514,206)">
+              <circle r="74" fill="none" stroke="rgba(13,27,34,.14)" stroke-dasharray="2 7"/>
+              <circle r="60" fill="rgba(255,255,255,.55)" stroke="rgba(13,27,34,.08)"/>
+              <g class="prop-ccw"><ellipse rx="55" ry="3" fill="rgba(34,50,61,.35)"/><ellipse rx="3" ry="55" fill="rgba(34,50,61,.28)"/></g>
+              <circle r="10" fill="#fff" stroke="#22323D" stroke-width="1.2"/>
+              <circle class="radar-node" r="3" fill="#E8571F"/>
+            </g>
+            <g transform="translate(206,514)">
+              <circle r="74" fill="none" stroke="rgba(13,27,34,.14)" stroke-dasharray="2 7"/>
+              <circle r="60" fill="rgba(255,255,255,.55)" stroke="rgba(13,27,34,.08)"/>
+              <g class="prop-ccw"><ellipse rx="55" ry="3" fill="rgba(34,50,61,.35)"/><ellipse rx="3" ry="55" fill="rgba(34,50,61,.28)"/></g>
+              <circle r="10" fill="#fff" stroke="#22323D" stroke-width="1.2"/>
+              <circle class="radar-node" r="3" fill="#E8571F"/>
+            </g>
+            <g transform="translate(514,514)">
+              <circle r="74" fill="none" stroke="rgba(13,27,34,.14)" stroke-dasharray="2 7"/>
+              <circle r="60" fill="rgba(255,255,255,.55)" stroke="rgba(13,27,34,.08)"/>
+              <g class="prop-cw"><ellipse rx="55" ry="3" fill="rgba(34,50,61,.35)"/><ellipse rx="3" ry="55" fill="rgba(34,50,61,.28)"/></g>
+              <circle r="10" fill="#fff" stroke="#22323D" stroke-width="1.2"/>
+              <circle class="radar-node" r="3" fill="#E8571F"/>
+            </g>
+
+            <polygon points="360,286 424,323 424,397 360,434 296,397 296,323" fill="#fff" stroke="#22323D" stroke-width="1.6"/>
+            <polygon points="360,308 400,331 400,389 360,412 320,389 320,331" fill="none" stroke="rgba(13,27,34,.16)" stroke-width="1"/>
+            <rect x="342" y="342" width="36" height="36" rx="4" fill="rgba(232,87,31,.12)" stroke="rgba(232,87,31,.7)" stroke-width="1.2"/>
+            <circle cx="360" cy="360" r="6" fill="#E8571F"/>
+            <circle cx="360" cy="360" r="13" fill="none" stroke="rgba(232,87,31,.35)" stroke-width="1"/>
+            <path d="M360 300 L354 312 L366 312 Z" fill="#E8571F"/>
+            <line x1="360" y1="272" x2="360" y2="286" stroke="rgba(13,27,34,.3)" stroke-width="1"/>
+            <g fill="rgba(13,27,34,.35)">
+              <circle cx="296" cy="323" r="2.4"/><circle cx="424" cy="323" r="2.4"/>
+              <circle cx="296" cy="397" r="2.4"/><circle cx="424" cy="397" r="2.4"/>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="hero__specs">
+      <span>200K PTS/S</span><i>/</i>
+      <span>275 TOPS</span><i>/</i>
+      <span>1000 HZ</span><i>/</i>
+      <span>&lt; 2 CM 归巢</span>
+    </div>
+  </div>
+
+  <div class="hero__scroll"><span></span>Scroll</div>
+  <div class="hero__ghost" aria-hidden="true">AETHER</div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <div class="marquee__set">
+      <span class="marquee__item">PX4 Autopilot</span><span class="marquee__sep">＋</span>
+      <span class="marquee__item">LiDAR SLAM</span><span class="marquee__sep">＋</span>
+      <span class="marquee__item">RTK Survey</span><span class="marquee__sep">＋</span>
+      <span class="marquee__item">Thermal Imaging</span><span class="marquee__sep">＋</span>
+      <span class="marquee__item">UWB Docking</span><span class="marquee__sep">＋</span>
+      <span class="marquee__item">FOC Drive</span><span class="marquee__sep">＋</span>
+      <span class="marquee__item">CAN-FD Bus</span><span class="marquee__sep">＋</span>
+      <span class="marquee__item">3-Axis Gimbal</span><span class="marquee__sep">＋</span>
+    </div>
+    <div class="marquee__set">
+      <span class="marquee__item">PX4 Autopilot</span><span class="marquee__sep">＋</span>
+      <span class="marquee__item">LiDAR SLAM</span><span class="marquee__sep">＋</span>
+      <span class="marquee__item">RTK Survey</span><span class="marquee__sep">＋</span>
+      <span class="marquee__item">Thermal Imaging</span><span class="marquee__sep">＋</span>
+      <span class="marquee__item">UWB Docking</span><span class="marquee__sep">＋</span>
+      <span class="marquee__item">FOC Drive</span><span class="marquee__sep">＋</span>
+      <span class="marquee__item">CAN-FD Bus</span><span class="marquee__sep">＋</span>
+      <span class="marquee__item">3-Axis Gimbal</span><span class="marquee__sep">＋</span>
+    </div>
+  </div>
+</div>
+
+<!-- 01 AIRFRAME -->
+<section id="airframe" class="section" data-section="1">
+  <div class="ghost-word" aria-hidden="true">AIRFRAME</div>
+  <div class="sec-head">
+    <span class="sec-head__idx">01</span>
+    <span class="sec-head__cn">机体档案</span>
+    <span class="sec-head__en">Airframe</span>
+    <span class="sec-head__rule"></span>
+  </div>
+
+  <div class="airframe">
+    <div class="card stage" id="stageCard">
+      <div class="stage__bar">
+        <span class="tag" id="modelTag">AETHER X4 / QUADROTOR</span>
+        <div class="seg" role="tablist" aria-label="视图切换">
+          <button class="seg__btn is-on" data-view="cut" role="tab" aria-selected="true">剖视图</button>
+          <button class="seg__btn" data-view="out" role="tab" aria-selected="false">外视图</button>
+        </div>
+      </div>
+
+      <div class="stage__view">
+        <svg viewBox="0 0 760 560" aria-hidden="true">
+          <g fill="none" stroke="rgba(13,27,34,.16)" stroke-width="1">
+            <path class="leader" data-node="0" d="M380 242 L250 74 L176 74"/>
+            <path class="leader" data-node="1" d="M386 320 L540 112 L592 112"/>
+            <path class="leader" data-node="2" d="M580 250 L640 400 L612 432"/>
+            <path class="leader" data-node="3" d="M345 398 L240 456 L192 456"/>
+          </g>
+
+          <g class="svg-model" id="svgDrone">
+            <line x1="40" y1="500" x2="720" y2="500" stroke="rgba(13,27,34,.12)" stroke-dasharray="2 8"/>
+            <ellipse cx="380" cy="502" rx="160" ry="9" fill="rgba(44,93,124,.07)"/>
+
+            <g stroke="rgba(13,27,34,.32)" stroke-width="2.4" stroke-linecap="round" fill="none">
+              <path d="M318 372 L304 450"/><path d="M442 372 L456 450"/>
+              <path d="M268 453 L354 453"/><path d="M406 453 L492 453"/>
+            </g>
+            <g fill="rgba(13,27,34,.35)">
+              <circle cx="270" cy="453" r="3"/><circle cx="352" cy="453" r="3"/>
+              <circle cx="408" cy="453" r="3"/><circle cx="490" cy="453" r="3"/>
+            </g>
+
+            <g stroke="#22323D" stroke-width="9" stroke-linecap="round">
+              <line x1="318" y1="312" x2="182" y2="252"/>
+              <line x1="442" y1="312" x2="578" y2="252"/>
+            </g>
+            <g stroke="rgba(255,255,255,.35)" stroke-width="1" stroke-dasharray="5 5">
+              <line x1="318" y1="312" x2="182" y2="252"/>
+              <line x1="442" y1="312" x2="578" y2="252"/>
+            </g>
+
+            <path d="M310 268 L450 268 L482 300 L482 345 L450 375 L310 375 L278 345 L278 300 Z"
+                  fill="#FFFFFF" stroke="#22323D" stroke-width="1.5"/>
+            <path d="M300 292 L460 292" stroke="rgba(13,27,34,.10)" stroke-width="1"/>
+            <path d="M300 352 L460 352" stroke="rgba(13,27,34,.10)" stroke-width="1"/>
+
+            <g class="interior">
+              <rect x="316" y="296" width="126" height="52" rx="4" fill="#F3F8FB" stroke="rgba(13,27,34,.22)" stroke-width="1" stroke-dasharray="4 4"/>
+              <rect x="330" y="310" width="44" height="26" rx="3" fill="rgba(232,87,31,.12)" stroke="rgba(232,87,31,.8)" stroke-width="1"/>
+              <text x="352" y="327" text-anchor="middle" fill="#E8571F" font-family="JetBrains Mono, monospace" font-size="7.5" letter-spacing=".6">NPU</text>
+              <g stroke="rgba(232,87,31,.45)" stroke-width="1">
+                <path d="M330 314 L322 314 M330 321 L322 321 M330 328 L322 328"/>
+                <path d="M374 314 L384 314 M374 321 L384 321 M374 328 L384 328"/>
+              </g>
+              <g stroke="rgba(44,93,124,.4)" stroke-width="1" fill="rgba(44,93,124,.09)">
+                <rect x="394" y="304" width="36" height="9" rx="2"/>
+                <rect x="394" y="318" width="36" height="9" rx="2"/>
+                <rect x="394" y="332" width="36" height="9" rx="2"/>
+              </g>
+              <g stroke="rgba(13,27,34,.16)" stroke-width="1">
+                <path d="M352 336 L352 344 L394 344"/>
+              </g>
+            </g>
+
+            <path d="M348 268 A32 32 0 0 1 412 268" fill="rgba(232,87,31,.10)" stroke="rgba(232,87,31,.65)" stroke-width="1.2"/>
+            <g class="lidar-spin">
+              <line x1="380" y1="268" x2="380" y2="244" stroke="rgba(232,87,31,.9)" stroke-width="1.4"/>
+              <path d="M380 268 L380 244 A24 24 0 0 1 392 248 Z" fill="rgba(232,87,31,.16)"/>
+            </g>
+
+            <line x1="340" y1="375" x2="340" y2="382" stroke="rgba(13,27,34,.35)" stroke-width="2"/>
+            <circle cx="340" cy="400" r="19" fill="#fff" stroke="rgba(13,27,34,.4)" stroke-width="1.2"/>
+            <circle cx="340" cy="400" r="9" fill="rgba(44,93,124,.10)" stroke="rgba(44,93,124,.65)" stroke-width="1"/>
+            <circle cx="340" cy="400" r="3.4" fill="rgba(44,93,124,.85)"/>
+            <path d="M325 384 A22 22 0 0 0 325 416" fill="none" stroke="rgba(13,27,34,.15)" stroke-width="1"/>
+
+            <rect x="424" y="380" width="24" height="12" rx="2" fill="rgba(44,93,124,.10)" stroke="rgba(44,93,124,.55)" stroke-width="1"/>
+            <g fill="none" stroke="rgba(44,93,124,.45)" stroke-width="1">
+              <path d="M448 386 q8 0 10 -7"/><path d="M424 386 q-8 0 -10 -7"/>
+            </g>
+
+            <g transform="translate(182,246)">
+              <ellipse rx="92" ry="14" fill="none" stroke="rgba(13,27,34,.14)" stroke-dasharray="2 6"/>
+              <ellipse class="rotor-disc" rx="82" ry="9" fill="rgba(34,50,61,.05)"/>
+              <ellipse rx="78" ry="3.6" fill="rgba(34,50,61,.28)"/>
+              <circle r="8" fill="#fff" stroke="rgba(13,27,34,.45)" stroke-width="1"/>
+              <circle r="2.4" fill="#E8571F"/>
+            </g>
+            <g transform="translate(578,246)">
+              <ellipse rx="92" ry="14" fill="none" stroke="rgba(13,27,34,.14)" stroke-dasharray="2 6"/>
+              <ellipse class="rotor-disc" rx="82" ry="9" fill="rgba(34,50,61,.05)"/>
+              <ellipse rx="78" ry="3.6" fill="rgba(34,50,61,.28)"/>
+              <circle r="8" fill="#fff" stroke="rgba(13,27,34,.45)" stroke-width="1"/>
+              <circle r="2.4" fill="#E8571F"/>
+            </g>
+
+            <g class="node-dot" data-node="0"><circle cx="380" cy="242" r="4"/><circle cx="380" cy="242" r="11" fill="none" stroke="#E8571F" stroke-opacity=".5"/></g>
+            <g class="node-dot" data-node="1"><circle cx="386" cy="320" r="4"/><circle cx="386" cy="320" r="11" fill="none" stroke="#E8571F" stroke-opacity=".5"/></g>
+            <g class="node-dot" data-node="2"><circle cx="578" cy="246" r="4"/><circle cx="578" cy="246" r="11" fill="none" stroke="#E8571F" stroke-opacity=".5"/></g>
+            <g class="node-dot" data-node="3"><circle cx="340" cy="400" r="4"/><circle cx="340" cy="400" r="11" fill="none" stroke="#E8571F" stroke-opacity=".5"/></g>
+          </g>
+        </svg>
+
+        <button class="callout callout--tl is-active" data-node="0"><span class="callout__num">01</span><span class="callout__cn">感知 · LiDAR</span></button>
+        <button class="callout callout--tr" data-node="1"><span class="callout__num">02</span><span class="callout__cn">算力 · NPU</span></button>
+        <button class="callout callout--br" data-node="2"><span class="callout__num">03</span><span class="callout__cn">动力 · Motor</span></button>
+        <button class="callout callout--bl" data-node="3"><span class="callout__num">04</span><span class="callout__cn">归巢 · Dock</span></button>
+      </div>
+
+      <div class="stage__bar stage__bar--foot">
+        <span class="tag">切换节点</span>
+        <div class="node-pills">
+          <button class="node-pill is-on" data-node="0"><b>01</b>感知</button>
+          <button class="node-pill" data-node="1"><b>02</b>算力</button>
+          <button class="node-pill" data-node="2"><b>03</b>动力</button>
+          <button class="node-pill" data-node="3"><b>04</b>归巢</button>
+        </div>
+      </div>
+    </div>
+
+    <aside class="card inspector">
+      <div class="inspector__head">
+        <span class="inspector__code" id="nodeCode">01 / PERCEPTION</span>
+        <span class="inspector__live"><i class="dot"></i>LIVE</span>
+      </div>
+      <h3 class="inspector__title" id="nodeTitle">360° 激光雷达与双目 SLAM</h3>
+      <p class="inspector__desc" id="nodeDesc">每秒 20 万束激光，测出每一面墙的距离。</p>
+      <dl class="inspector__specs" id="nodeSpecs"></dl>
+      <div class="wave">
+        <div class="wave__bar"><span id="waveLabel">点云反射强度</span><span class="wave__metric" id="waveMetric">±1.5 cm</span></div>
+        <canvas id="waveCanvas"></canvas>
+      </div>
+      <div class="inspector__slider">
+        <div class="slider__row"><span id="sliderLabel">扫描频率</span><span class="slider__val"><b id="sliderVal">80</b> <i id="sliderUnit">Hz</i></span></div>
+        <input id="nodeSlider" type="range" min="20" max="160" value="80" aria-label="参数调节" />
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- 02 TEARDOWN -->
+<section id="teardown" class="section section--tint" data-section="2">
+  <div class="ghost-word" aria-hidden="true">TEARDOWN</div>
+  <div class="sec-head">
+    <span class="sec-head__idx">02</span>
+    <span class="sec-head__cn">系统拆解</span>
+    <span class="sec-head__en">Teardown</span>
+    <span class="sec-head__rule"></span>
+  </div>
+
+  <div class="teardown" id="teardownStage">
+    <div class="card td-stage">
+      <div class="td-stage__bar">
+        <span class="tag">Explode Ratio</span>
+        <span class="td-stage__pct"><b id="explodePct">000</b><i>%</i></span>
+      </div>
+
+      <div class="td-view" id="tdView">
+        <canvas id="tdCanvas" aria-label="无人机三维拆解视图，可拖拽旋转，点击部件查看层级"></canvas>
+        <div class="td-view__hud">
+          <span>WebGL / Orbit</span>
+          <span class="td-view__stat" id="tdStat">LOADING</span>
+        </div>
+        <div class="td-view__loading" id="tdLoading"><i></i><span>GEOMETRY</span></div>
+      </div>
+
+      <div class="td-stack" id="tdStack">
+        <article class="td-layer" data-layer="0">
+          <span class="td-layer__num">01</span>
+          <div><span class="td-layer__cn">感知层</span><span class="td-layer__en">LiDAR &amp; Gimbal Array</span></div>
+          <span class="td-layer__spec">360° ToF</span>
+        </article>
+        <article class="td-layer" data-layer="1">
+          <span class="td-layer__num">02</span>
+          <div><span class="td-layer__cn">算力层</span><span class="td-layer__en">Flight &amp; Vision Board</span></div>
+          <span class="td-layer__spec">275 TOPS</span>
+        </article>
+        <article class="td-layer" data-layer="2">
+          <span class="td-layer__num">03</span>
+          <div><span class="td-layer__cn">动力层</span><span class="td-layer__en">FOC Propulsion</span></div>
+          <span class="td-layer__spec">1000 Hz</span>
+        </article>
+        <article class="td-layer" data-layer="3">
+          <span class="td-layer__num">04</span>
+          <div><span class="td-layer__cn">能源层</span><span class="td-layer__en">Battery &amp; Dock</span></div>
+          <span class="td-layer__spec">320 Wh/kg</span>
+        </article>
+      </div>
+
+      <div class="td-stage__foot">
+        <input id="explodeRange" type="range" min="0" max="100" value="0" aria-label="拆解进度" />
+        <div class="td-presets">
+          <button class="td-preset is-on" data-explode="0">合拢</button>
+          <button class="td-preset" data-explode="55">半解</button>
+          <button class="td-preset" data-explode="100">全展</button>
+        </div>
+      </div>
+    </div>
+
+    <aside class="card td-readout">
+      <div class="td-readout__idx"><span id="stageNum">01</span><i>/ 03</i></div>
+      <h3 id="stageTitle">整机</h3>
+      <p id="stageDesc">四层结构压在一起，像一枚完整的金属胶囊。</p>
+      <dl class="metrics">
+        <div><dt>层间总线</dt><dd id="mBus">CAN-FD / PCIe</dd></div>
+        <div><dt>散热耦合</dt><dd id="mThermal">下洗气流</dd></div>
+      </dl>
+      <div class="td-stages">
+        <div class="td-stages__row is-on"><span>01</span><b>合拢</b><i></i></div>
+        <div class="td-stages__row"><span>02</span><b>分离</b><i></i></div>
+        <div class="td-stages__row"><span>03</span><b>全展</b><i></i></div>
+      </div>
+      <div class="td-bar"><i class="is-on"></i><i></i><i></i></div>
+    </aside>
+  </div>
+
+  <div class="card ask" id="askCard">
+    <div class="ask__head">
+      <span class="tag">AI / Grounded QA</span>
+      <span class="ask__status" id="askStatusWrap"><i class="dot"></i><span id="askStatus">就绪</span></span>
+    </div>
+    <h3>问 AETHER · 关于这套结构</h3>
+    <div class="ask__chips" id="askChips">
+      <button type="button" class="ask__chip" data-q="电机为什么这样布局？">电机为什么这样布局？</button>
+      <button type="button" class="ask__chip" data-q="算力层为什么放在中间？">算力层为什么放在中间？</button>
+      <button type="button" class="ask__chip" data-q="四层之间靠什么通信？">四层之间靠什么通信？</button>
+    </div>
+    <form class="ask__form" id="askForm">
+      <input id="askInput" type="text" maxlength="300" autocomplete="off"
+             placeholder="输入问题，按回车提问" aria-label="向 AETHER 提问" />
+      <button type="submit" id="askSubmit">提问</button>
+    </form>
+    <div class="ask__log" id="askLog" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- 03 FLIGHT LOOP -->
+<section id="flight" class="section" data-section="3">
+  <div class="ghost-word" aria-hidden="true">FLIGHT LOOP</div>
+  <div class="sec-head">
+    <span class="sec-head__idx">03</span>
+    <span class="sec-head__cn">飞行回路</span>
+    <span class="sec-head__en">Flight Loop</span>
+    <span class="sec-head__rule"></span>
+  </div>
+
+  <div class="flight">
+    <div class="card flight__stage">
+      <div class="flight__stage-top">
+        <span class="flight__step" id="simBadge">01 / SEE</span>
+        <span class="tag tag--text" id="simTitle">激光雷达点云建图</span>
+        <button class="mini-btn" id="simAction">移动障碍物</button>
+      </div>
+      <div class="flight__canvas-wrap">
+        <canvas id="simCanvas"></canvas>
+        <span class="flight__hint">移动鼠标 / 点击画布改变场景</span>
+      </div>
+      <div class="flight__tabs">
+        <button class="flight__tab is-on" data-step="0"><b>01 / SEE</b><span>感知建图</span></button>
+        <button class="flight__tab" data-step="1"><b>02 / PLAN</b><span>路径规划</span></button>
+        <button class="flight__tab" data-step="2"><b>03 / CONTROL</b><span>姿态控制</span></button>
+      </div>
+    </div>
+
+    <div class="flight__steps" id="flightSteps">
+      <article class="flight-step is-on" data-step-index="0">
+        <div class="flight-step__top">
+          <span class="flight-step__num">01<small>0.8 ms</small></span>
+          <span class="flight-step__en">See</span>
+        </div>
+        <h3>先看见距离</h3>
+        <p>激光扫过空间，每个像素都带着毫米级的深度。</p>
+        <div class="flight-step__meta">200K PTS/S · 暗光可用</div>
+      </article>
+      <article class="flight-step" data-step-index="1">
+        <div class="flight-step__top">
+          <span class="flight-step__num">02<small>2.1 ms</small></span>
+          <span class="flight-step__en">Plan</span>
+        </div>
+        <h3>再算一条路</h3>
+        <p>障碍一出现，就在安全走廊里重算一条不撞墙的曲线。</p>
+        <div class="flight-step__meta">100 次/秒重规划 · 平滑优先</div>
+      </article>
+      <article class="flight-step" data-step-index="2">
+        <div class="flight-step__top">
+          <span class="flight-step__num">03<small>1000 Hz</small></span>
+          <span class="flight-step__en">Control</span>
+        </div>
+        <h3>最后稳住机身</h3>
+        <p>陀螺仪测到 0.1° 的倾斜，控制器立刻反向补偿。</p>
+        <div class="flight-step__meta">PID 闭环 · 阵风自动回正</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 04 MISSIONS -->
+<section id="missions" class="section section--tint" data-section="4">
+  <div class="ghost-word" aria-hidden="true">MISSIONS</div>
+  <div class="sec-head">
+    <span class="sec-head__idx">04</span>
+    <span class="sec-head__cn">任务场景</span>
+    <span class="sec-head__en">Missions</span>
+    <span class="sec-head__rule"></span>
+  </div>
+
+  <div class="eco">
+    <div class="card eco__panel">
+      <div class="panel__head">
+        <h3>动力分配</h3>
+        <span class="tag" id="maneuverLabel">悬停 · 四桨同速</span>
+      </div>
+      <div class="motors">
+        <div class="motor"><div class="motor__id">M1<small>左前 CW</small></div><div class="motor__track"><div class="motor__fill" id="fill0" style="width:55%"></div></div><div class="motor__val" id="val0">5200<i>rpm</i></div></div>
+        <div class="motor"><div class="motor__id">M2<small>右前 CCW</small></div><div class="motor__track"><div class="motor__fill" id="fill1" style="width:55%"></div></div><div class="motor__val" id="val1">5200<i>rpm</i></div></div>
+        <div class="motor"><div class="motor__id">M3<small>左后 CCW</small></div><div class="motor__track"><div class="motor__fill" id="fill2" style="width:55%"></div></div><div class="motor__val" id="val2">5200<i>rpm</i></div></div>
+        <div class="motor"><div class="motor__id">M4<small>右后 CW</small></div><div class="motor__track"><div class="motor__fill" id="fill3" style="width:55%"></div></div><div class="motor__val" id="val3">5200<i>rpm</i></div></div>
+      </div>
+      <div class="chips">
+        <button class="chip is-on" data-maneuver="hover">悬停</button>
+        <button class="chip" data-maneuver="forward">前倾</button>
+        <button class="chip" data-maneuver="yaw">偏航</button>
+        <button class="chip" data-maneuver="climb">跃升</button>
+      </div>
+    </div>
+
+    <div class="card eco__panel">
+      <div class="panel__head">
+        <h3>三轴云台增稳</h3>
+        <span class="tag" id="gimbalBadge">±0.005° 稳定精度</span>
+      </div>
+      <div class="gimbal">
+        <svg class="gimbal__art" viewBox="0 0 320 150" aria-hidden="true">
+          <line x1="20" y1="92" x2="300" y2="92" stroke="rgba(13,27,34,.14)" stroke-dasharray="4 6"/>
+          <text x="22" y="106" font-family="JetBrains Mono, monospace" font-size="7" fill="rgba(13,27,34,.32)">HORIZON</text>
+          <line x1="160" y1="86" x2="160" y2="118" stroke="rgba(13,27,34,.22)" stroke-width="1.5"/>
+          <g id="gimbalBody" style="transform-origin:160px 86px">
+            <rect x="96" y="62" width="128" height="46" rx="12" fill="#FFFFFF" stroke="#22323D" stroke-width="1.4"/>
+            <rect x="118" y="74" width="30" height="14" rx="3" fill="rgba(44,93,124,.12)" stroke="rgba(44,93,124,.5)" stroke-width="1"/>
+            <line x1="96" y1="86" x2="70" y2="86" stroke="#22323D" stroke-width="3" stroke-linecap="round"/>
+            <line x1="224" y1="86" x2="250" y2="86" stroke="#22323D" stroke-width="3" stroke-linecap="round"/>
+          </g>
+          <g id="gimbalCam">
+            <line x1="160" y1="108" x2="160" y2="118" stroke="rgba(13,27,34,.3)" stroke-width="2"/>
+            <rect x="142" y="118" width="36" height="24" rx="6" fill="#FFFFFF" stroke="#22323D" stroke-width="1.3"/>
+            <circle cx="160" cy="130" r="6" fill="rgba(44,93,124,.12)" stroke="rgba(44,93,124,.7)" stroke-width="1.2"/>
+          </g>
+        </svg>
+        <div class="gimbal__read">
+          <div><span>机身倾角</span><b id="bodyTilt">14.0<i>°</i></b></div>
+          <div><span>云台补偿</span><b id="camComp">-14.0<i>°</i></b></div>
+          <div><span>画面抖动</span><b>0.02<i>px</i></b></div>
+        </div>
+        <div class="gimbal__slider">
+          <input id="gimbalRange" type="range" min="-25" max="25" value="14" aria-label="机身倾角" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card missions">
+    <div class="missions__tabs">
+      <button class="mission-btn is-on" data-mission="inspect">
+        <span class="mission-btn__num">A</span>
+        <span><span class="mission-btn__cn">电力巡检</span><span class="mission-btn__en">Inspection</span></span>
+      </button>
+      <button class="mission-btn" data-mission="map">
+        <span class="mission-btn__num">B</span>
+        <span><span class="mission-btn__cn">地形测绘</span><span class="mission-btn__en">Mapping</span></span>
+      </button>
+      <button class="mission-btn" data-mission="guard">
+        <span class="mission-btn__num">C</span>
+        <span><span class="mission-btn__cn">夜间安防</span><span class="mission-btn__en">Security</span></span>
+      </button>
+    </div>
+    <div class="missions__body">
+      <div class="missions__title" id="missionTitle"><b>MISSION A</b> · 沿线路自动巡航与缺陷识别</div>
+      <div class="missions__chain" id="missionChain"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 ARCHIVE -->
+<footer id="archive" class="section footer" data-section="5">
+  <div class="footer__ghost" aria-hidden="true">AETHER</div>
+
+  <div class="footer__top">
+    <div class="footer__lead">
+      <div class="eyebrow"><span class="eyebrow__sq"></span><span>05 / Archive</span></div>
+      <h2>看得见的机械，<br /><em>才值得信任。</em></h2>
+      <p>AETHER 是一份无人机的视觉原理手册：用动态图解代替说明书。</p>
+    </div>
+    <div class="footer__cols">
+      <div class="footer__col">
+        <h4>Index</h4>
+        <ul>
+          <li><a href="#home">00 首屏</a></li>
+          <li><a href="#airframe">01 机体档案</a></li>
+          <li><a href="#teardown">02 系统拆解</a></li>
+          <li><a href="#flight">03 飞行回路</a></li>
+          <li><a href="#missions">04 任务场景</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>System</h4>
+        <ul>
+          <li><span>LiDAR / SLAM</span></li>
+          <li><span>Edge NPU</span></li>
+          <li><span>FOC / PID</span></li>
+          <li><span>UWB / RTK</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="case">
+    <div class="case__head">
+      <span class="tag">Project Notes</span>
+      <span class="case__note">概念设计作品 · 参数为示意值</span>
+    </div>
+    <div class="case__grid">
+      <div><h4>角色</h4><p>概念设定 · 3D 资产制作 · 前端实现 · 后端接口</p></div>
+      <div><h4>技术</h4><p>Vanilla JS · SVG · Canvas 2D · Three.js · Draco · FastAPI</p></div>
+      <div><h4>约束</h4><p>单页交付 · 国内网络可访问 · 不依赖任何 CDN</p></div>
+      <div><h4>验证</h4><p>7,684 三角面 · glTF 93 KB · 移动端可操作</p></div>
+    </div>
+    <div class="case__foot">
+      <span>AETHER X4 / UAV Visual Manual</span>
+      <span>Designed &amp; built by <b>许泽鑫</b></span>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <span>© 2026 AETHER / UAV Visual Manual</span>
+    <a href="#home">回到首屏 ↑</a>
+  </div>
+</footer>
+
+</main>
+
+<script src="./assets/js/site.js"></script>
+
+<script src="./assets/js/ask.js"></script>
+
+<script type="module" src="./assets/js/lazy3d.js?v=2"></script>
+</body>
+</html>

@@ -9,44 +9,42 @@
   },
   "projects": [
     {
-      "id": "aftersales",
+      "id": "muse",
       "index": "01",
-      "title": "智家售后 Copilot",
-      "subtitle": "家电企业智能售后排障与工单协同 Agent",
-      "categoryLabel": "AI Agent · Deep RAG",
+      "title": "MUSE 灵感引擎",
+      "subtitle": "多模态 AI 自由画布创作工作台",
+      "categoryLabel": "AIGC 工作台",
       "year": "2026",
-      "url": "http://106.53.222.39/aftersales/",
-      "actionLabel": "进入在线工作台",
+      "url": "/muse/",
+      "actionLabel": "进入创作工作台",
       "healthUrl": null,
       "requiresLogin": true,
       "showcaseOnly": false,
       "isPortrait": false,
-      "cover": "./assets/img/aftersales.svg",
-      "summary": "面向 B 端售后工程师与客服坐席的排障协同工作台。打通 Qdrant + BM25 混合检索、本地 BGE ONNX 向量化、MCP 2.x 质保/库存/工单工具链与 LangGraph 7 节点状态机，支持一线工程师与售后主管双角色审批流及 SSE 逐字实时推送。",
+      "cover": "./assets/img/muse.jpg",
+      "summary": "面向影视、广告与内容团队的节点式 AI 创作平台原型。支持文本、图片、视频、音频、Agent 与预演台 8 类节点自由连线，集成多模型参数面板、四源参考素材库、视频片段截取与 15 秒品牌短片引导生成工作流。",
       "metrics": [
         {
-          "k": "编排引擎",
-          "v": "LangGraph 7 节点状态机"
+          "k": "交互形态",
+          "v": "XYFlow 自由画布 + 移动端引导卡片流"
         },
         {
-          "k": "检索策略",
-          "v": "model_id 隔离 + 父子切片 + RRF 精排"
+          "k": "节点体系",
+          "v": "8 类多模态节点 · 手柄拖拽连线"
         },
         {
-          "k": "权限闭环",
-          "v": "RBAC 角色切换 + 主管审批落库"
+          "k": "演示流程",
+          "v": "剧本 → 分镜 → 视频合成 → 成片预演"
         }
       ],
       "stack": [
-        "LangGraph",
-        "FastAPI",
-        "DeepSeek",
-        "Qdrant",
-        "BGE ONNX",
-        "MCP 2.x",
-        "Next.js 15"
+        "React",
+        "TypeScript",
+        "XYFlow",
+        "Zustand",
+        "Vite"
       ],
-      "demoNote": "受模型调用额度限制，需演示账号登录（请联系获取）。"
+      "demoNote": "演示环境需登录访问，请联系获取体验账号。"
     },
     {
       "id": "delia",
@@ -91,42 +89,44 @@
       "demoNote": "本地 GPU 实时推理项目，可在此直接切换主播状态/口型动图，或点击进入查看完整控制台截图。"
     },
     {
-      "id": "muse",
+      "id": "aftersales",
       "index": "03",
-      "title": "MUSE 灵感引擎",
-      "subtitle": "多模态 AI 自由画布创作工作台",
-      "categoryLabel": "AIGC 工作台",
+      "title": "智家售后 Copilot",
+      "subtitle": "家电企业智能售后排障与工单协同 Agent",
+      "categoryLabel": "AI Agent · Deep RAG",
       "year": "2026",
-      "url": "/muse/",
-      "actionLabel": "进入创作工作台",
+      "url": "http://106.53.222.39/aftersales/",
+      "actionLabel": "进入在线工作台",
       "healthUrl": null,
       "requiresLogin": true,
       "showcaseOnly": false,
       "isPortrait": false,
-      "cover": "./assets/img/muse.jpg",
-      "summary": "面向影视、广告与内容团队的节点式 AI 创作平台原型。支持文本、图片、视频、音频、Agent 与预演台 8 类节点自由连线，集成多模型参数面板、四源参考素材库、视频片段截取与 15 秒品牌短片引导生成工作流。",
+      "cover": "./assets/img/aftersales.svg",
+      "summary": "面向 B 端售后工程师与客服坐席的排障协同工作台。打通 Qdrant + BM25 混合检索、本地 BGE ONNX 向量化、MCP 2.x 质保/库存/工单工具链与 LangGraph 7 节点状态机，支持一线工程师与售后主管双角色审批流及 SSE 逐字实时推送。",
       "metrics": [
         {
-          "k": "交互形态",
-          "v": "XYFlow 自由画布 + 移动端引导卡片流"
+          "k": "编排引擎",
+          "v": "LangGraph 7 节点状态机"
         },
         {
-          "k": "节点体系",
-          "v": "8 类多模态节点 · 手柄拖拽连线"
+          "k": "检索策略",
+          "v": "model_id 隔离 + 父子切片 + RRF 精排"
         },
         {
-          "k": "演示流程",
-          "v": "剧本 → 分镜 → 视频合成 → 成片预演"
+          "k": "权限闭环",
+          "v": "RBAC 角色切换 + 主管审批落库"
         }
       ],
       "stack": [
-        "React",
-        "TypeScript",
-        "XYFlow",
-        "Zustand",
-        "Vite"
+        "LangGraph",
+        "FastAPI",
+        "DeepSeek",
+        "Qdrant",
+        "BGE ONNX",
+        "MCP 2.x",
+        "Next.js 15"
       ],
-      "demoNote": "演示环境需登录访问，请联系获取体验账号。"
+      "demoNote": "受模型调用额度限制，需演示账号登录（请联系获取）。"
     },
     {
       "id": "aether",
